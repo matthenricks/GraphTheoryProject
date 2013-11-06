@@ -13,7 +13,7 @@ public class BasicGraph {
 		@Override
 		public int compare(Node o1, Node o2) {
 			// TODO Auto-generated method stub
-			return o1.connections.size() - o2.connections.size();
+			return o2.connections.size() - o1.connections.size();
 		}
 	};
 	

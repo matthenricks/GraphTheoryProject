@@ -8,10 +8,10 @@ public class Runner {
 	
 	public static void main(String[] args) {
 		
-		BasicGraph graph = RandomGraphCreator.createGraph(6);
+		BasicGraph graph = RandomGraphCreator.createGraph(50);
 		System.out.println(graph);
 		
-		BasicGraph graph2 = RandomGraphCreatorFromTriangles.createGraph(6);
+		BasicGraph graph2 = RandomGraphCreatorFromTriangles.createGraph(50);
 		System.out.println(graph2);
 		
 		Analysis.analyzeStrictDecreasing(graph2);

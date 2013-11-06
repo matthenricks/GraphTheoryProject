@@ -41,7 +41,7 @@ public class RandomGraphCreator {
 		int maxNumEdges = (numNodes * numNodes) / 3;
 		
 		// determine actual number of edges
-		int numEdges = randomGenerator.nextInt(maxNumEdges);
+		int numEdges = 800;
 		
 		int randomStart, randomDest;
 		// add these random amounts of edges (or possibly fewer if repeats occur)
