@@ -8,14 +8,33 @@ import java.util.List;
 public class BasicGraph {
 
 	public List<Node> allNodes;
+	
+	public BasicGraph() {
+		allNodes = new LinkedList<Node>();
+	}
+	
 	// This will be lowest-first sorted order
 	public static Comparator<Node> compareNodes = new Comparator<Node>(){
-		@Override
 		public int compare(Node o1, Node o2) {
-			// TODO Auto-generated method stub
 			return o2.connections.size() - o1.connections.size();
 		}
 	};
+	
+	public void addNode(int id) {
+		Node n = new Node(id);
+		allNodes.add(n);
+	}
+	
+	public void addNode(Node n) {
+		allNodes.add(n);
+	}
+	
+	public void addEdge(Node start, Node dest) {
+		if (!start.connections.contains(dest)) {
+			start.connections.add(dest);
+			dest.connections.add(start);
+		}
+	}
 	
 	public String toString() {
 		String ret = "Graph: ";
@@ -45,25 +64,5 @@ public class BasicGraph {
 			ret += "]";
 			return ret;
 		}
-	}
-	
-	public void addNode(int id) {
-		Node n = new Node(id);
-		allNodes.add(n);
-	}
-	
-	public void addNode(Node n) {
-		allNodes.add(n);
-	}
-	
-	public void addEdge(Node start, Node dest) {
-		if (!start.connections.contains(dest)) {
-			start.connections.add(dest);
-			dest.connections.add(start);
-		}
-	}
-	
-	public BasicGraph() {
-		allNodes = new LinkedList<Node>();
 	}
 }
