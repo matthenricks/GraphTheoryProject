@@ -1,21 +1,15 @@
 package src;
 
-import src.BasicGraph.Node;
-
 public class Runner {
-
-	static int counter = 0;
 	
 	public static void main(String[] args) {
 		
-		BasicGraph graph = RandomGraphCreator.createGraph(50);
+		double density = 0.5;
+		BasicGraph graph = GraphCreator.createRandomConnectedGraph(25, 3, density);
 		System.out.println(graph);
 		
-		BasicGraph graph2 = RandomGraphCreatorFromTriangles.createGraph(50);
-		System.out.println(graph2);
-		
-		Analysis.analyzeStrictDecreasing(graph2);
-		Analysis.analyzeDecreasingNeighbors(graph2);
+		Analysis.analyzeStrictDecreasing(graph);
+		Analysis.analyzeDecreasingNeighbors(graph);
 		
 	}
 
