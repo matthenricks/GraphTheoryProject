@@ -58,6 +58,42 @@ public class BasicGraph {
 		}
 	};
 	
+	//This will be order from highest number of neighbors colored to lowest
+	public static Comparator<Node> compareNumColored = new Comparator<Node>() {
+		public int compare(Node o1, Node o2) {
+			int num1 = 0;
+			int num2 = 0;
+			for (Node n: o1.connections) {
+				if (n.color != 0)
+					num1++;
+			}
+			for (Node n: o2.connections) {
+				if (n.color != 0)
+					num2++;
+			}
+			return num2 - num1;
+		}
+	};
+		
+	//This will be order from highest neighbor color to lowest
+	public static Comparator<Node> compareHighColor = new Comparator<Node>() {
+		public int compare(Node o1, Node o2) {
+			int num1 = 0;
+			int num2 = 0;
+			for (Node n: o1.connections) {
+				if (n.color > num1)
+					num1 = n.color;
+			}
+			for (Node n: o2.connections) {
+				if (n.color > num2)
+					num2 = n.color;
+			}
+			return num2 - num1;
+		}
+	};
+	
+	
+	
 	public void addNode(int id) {
 		Node n = new Node(id);
 		allNodes.add(n);
