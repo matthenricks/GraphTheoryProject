@@ -1,5 +1,9 @@
 package src;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -11,6 +15,40 @@ public class BasicGraph {
 	
 	public BasicGraph() {
 		allNodes = new LinkedList<Node>();
+	}
+	
+	public boolean export_graph(File folderToCreate) throws IOException {
+		if(folderToCreate.exists())
+			return false;
+		System.out.println(folderToCreate.getAbsolutePath());
+		if(!folderToCreate.mkdir())
+			return false;
+		String base_dir = folderToCreate.toString();
+		File f1 = new File(base_dir + "/node_chart.csv");
+		File f2 = new File(base_dir + "/edge_chart.csv");
+		
+		BufferedWriter wr = new BufferedWriter(new FileWriter(f1));
+		BufferedWriter wr2 = new BufferedWriter(new FileWriter(f2));
+		wr.append("Id,Label,Color\n");
+		wr2.append("Source,Target,Type,Id,Label,Weight\n");
+		
+		int counter = 0;
+		
+		for (Node n : allNodes) {
+			wr.append(n.id + "," + "Node " + n.id + "," + n.color + "\n");
+			for (Node n2 : n.connections) 
+				wr2.append(n.id + ","
+						+ n2.id + "," 
+						+ "Directed" + "," 
+						+ counter++ + "," 
+						+ "Node " + n.id + " to Node " + n2.id + "," 
+						+ "1\n");
+		}
+		wr.close();
+		wr2.close();
+		
+		System.out.println("Graph Exported");
+		return true;
 	}
 	
 	// This will be lowest-first sorted order
