@@ -17,6 +17,13 @@ public class BasicGraph {
 		allNodes = new LinkedList<Node>();
 	}
 	
+	// setting all colors back to 0 after a coloring has been done
+	public void reset() {
+		for (Node n : allNodes) {
+			n.color = 0;
+		}
+	}
+	
 	public boolean export_graph(File folderToCreate) throws IOException {
 		if(folderToCreate.exists())
 			return false;
@@ -35,7 +42,7 @@ public class BasicGraph {
 		int counter = 0;
 		
 		for (Node n : allNodes) {
-			wr.append(n.id + "," + "Node " + n.id + "," + n.color + "\n");
+			wr.append(n.id + "," + "Node " + n.id + "," + String.valueOf(n.color) + "\n");
 			for (Node n2 : n.connections) 
 				wr2.append(n.id + ","
 						+ n2.id + "," 

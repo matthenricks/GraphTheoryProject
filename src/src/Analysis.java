@@ -58,7 +58,6 @@ public class Analysis {
 		
 		System.out.println(verify(g));
 		System.out.println();
-		reset(g);
 	}
 	
 	/*
@@ -110,7 +109,6 @@ public class Analysis {
 				+ duration/1000000000.0);
 		System.out.println(verify(g));
 		System.out.println();
-		reset(g);
 	}
 	
 	static void analyzeStrictIncreasing(BasicGraph g) {
@@ -143,7 +141,6 @@ public class Analysis {
 				+ duration/1000000000.0);
 		System.out.println(verify(g));
 		System.out.println();
-		reset(g);
 	}
 	
 	static void analyzeIncreasingNeighbors(BasicGraph g) {
@@ -188,7 +185,6 @@ public class Analysis {
 				+ duration/1000000000.0);
 		System.out.println(verify(g));
 		System.out.println();
-		reset(g);
 	}
 	
 	/*
@@ -229,7 +225,6 @@ public class Analysis {
 				+ duration/1000000000.0);
 		System.out.println(verify(g));
 		System.out.println();
-		reset(g);
 	}
 	
 	/*
@@ -270,7 +265,6 @@ public class Analysis {
 				+ duration/1000000000.0);
 		System.out.println(verify(g));
 		System.out.println();
-		reset(g);
 	}
 	
 	/* 
@@ -306,13 +300,6 @@ public class Analysis {
 			}
 		}
 		return true;
-	}
-	
-	// setting all colors back to 0 after a coloring has been done
-	static void reset(BasicGraph g) {
-		for (Node n : g.allNodes) {
-			n.color = 0;
-		}
 	}
 	
 }
