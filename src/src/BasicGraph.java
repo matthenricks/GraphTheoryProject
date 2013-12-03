@@ -110,11 +110,89 @@ public class BasicGraph {
 		allNodes.add(n);
 	}
 	
+	/**
+	 * Returns true if an edge connecting start and dest already exists in
+	 * the graph, false otherwise
+	 * 
+	 * @param start
+	 * @param dest
+	 * @return
+	 */
+	public boolean existsEdge(Node start, Node dest) {
+		if (start.connections.contains(dest)) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns true if an edge did not previously exist between start and dest,
+	 * false otherwise.
+	 * 
+	 * @param start
+	 * @param dest
+	 */
 	public void addEdge(Node start, Node dest) {
 		if (!start.connections.contains(dest)) {
+			start.degree++;
+			dest.degree++;
 			start.connections.add(dest);
 			dest.connections.add(start);
 		}
+	}
+	
+	/**
+	 * Returns the max degree of any node in the graph
+	 * 
+	 * @return
+	 */
+	public int maxDegree() {
+		int max = 0;
+		int degree;
+		
+		for (Node n : allNodes) {
+			degree = n.connections.size();
+			if (degree > max) {
+				max = degree;
+			}
+		}
+		return max;
+	}
+	
+	/**
+	 * Returns the m degree of any node in the graph
+	 * 
+	 * @return
+	 */
+	public int minDegree() {
+		int min = Integer.MAX_VALUE;
+		int degree;
+		
+		for (Node n : allNodes) {
+			degree = n.connections.size();
+			if (degree < min) {
+				min = degree;
+			}
+		}
+		return min;
+	}
+	
+	/**
+	 * Returns the number of edges in the graph
+	 * 
+	 * @return
+	 */
+	public int numEdges() {
+		int num = 0;
+		for (Node n : allNodes) {
+			num += n.connections.size();
+		}
+		return num / 2;
+	}
+	
+	//TODO run DFS, see if #nodes visited == #nodes
+	public boolean isConnected() {
+		return false;
 	}
 	
 	public String toString() {
@@ -129,10 +207,22 @@ public class BasicGraph {
 		public int id;
 		public int color;
 		public List<Node> connections;
+		public int degree;
+		public int setNumber; // used for simplified creation
 		
 		public Node(int mID) {
 			id = mID;
 			connections = new LinkedList<Node>();
+			degree = 0;
+			setNumber = -1; // -1 signals not assigned a set
+		}
+		
+		// alternate constructor used in createRandomConnectedGraphSimplified
+		public Node(int id, int setNumber) {
+			this.id = id;
+			connections = new LinkedList<Node>();
+			degree = 0;
+			this.setNumber = setNumber;
 		}
 		
 		public String toString() {
