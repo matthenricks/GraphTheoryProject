@@ -23,10 +23,14 @@ public class Runner {
 		// the possibilities... But still, there will be a HUGE amount
 		// ALSO, PLEASE DO NOT JUDGE ME FOR THIS SHITTY CODE :D
 		
-		int max_node_num = 500, step_node_num = 50;
-		int max_k = 100, start_k = 5, step_k = 5;
-		double max_density = 1.0, start_density = 0.1, step_density = 0.3;
-		int max_degree = Integer.MAX_VALUE;
+		int[] node_arr = {2, 5, 10, 50, 100};
+		int[] k_arr = {3, 4, 5, 7, 10, 20};
+		double max_density = 1.0, start_density = 0.1, step_density = 0.1;
+		// Equation is based off a normal distribution
+		double max_degree = 1.0, start_degree = 0.1, step_degree = 0.1;
+		
+		// Number of how many tests to average together
+		final int mean_count = 10;
 		
 
 		BufferedWriter wr = new BufferedWriter(new FileWriter("../../../Desktop/Export.csv"));
@@ -45,8 +49,9 @@ public class Runner {
 		wr.append("\n");
 		int overall_counter = 0;
 		// Doesn't handle the max degree at all
-		for (int k = start_k; k < max_k; k += step_k) {
-			for (int node_num = k; node_num < max_node_num; node_num += step_node_num) {
+		for (int k : k_arr) {
+			for (int node_num : node_arr) {
+				node_num *= k;
 				for (double density = start_density; density <= max_density; density += step_density) {
 					int[] set_sizes = new int[k];
 					int mod = node_num % k; // Get the remainder of the nodes being placed
@@ -60,28 +65,37 @@ public class Runner {
 						set_sizes[counter] = common_val;
 					}
 					
-					// For now, just use a uniform distribution on the set_sizes			
-			        BasicGraph graph = GraphCreator.createRandomConnectedGraphSimplified(node_num, k, density, max_degree, set_sizes);
-			        for (Analysis.StatTestFunction func : Analysis.functions) {
-			        	System.out.println("Running Test " + func.toString());
-			        	StatTracker stats = func.runTest(graph);
-			        	// Because more and more RAM will be used, it may be a good idea to reverse this
-			        	wr.append(
-			        			String.valueOf(overall_counter++) + "," +	// TestID
-	        					String.valueOf(k) + "," +	// K
-	        					String.valueOf(node_num) + "," +	// Node_Num
-	        					String.valueOf(density) + "," +	// Density
-	        					String.valueOf(max_degree) + "," +	// MaxDegree
-	        					"Uniform" + "," +	// Distribution
-	        					(stats.my_correctness ? "true" : "false") + "," +	// Is-Colored-Correctly
-	        					String.valueOf(stats.my_color_count - k) + "," +	// K-Correctness
-	        					String.valueOf(stats.my_duration) + "," +	// Duration
-	        					func.toString() // Test_Type
-	        			);
-			        	wr.append("\n");
-			        	
-			        	graph.reset();
-			        }
+					// Section for modulating max_degree
+					for (double maxD = start_degree; maxD <= max_degree; maxD += step_degree) {
+						// calculate the degree, based off the maximum of 
+						int max_deg = (Math.round(((float)k - 1f) * ((float)node_num/(float)k)) + 1);
+						max_deg = (int)Math.round(maxD * (double)max_deg);
+						for (Analysis.StatTestFunction func : Analysis.functions) {
+				        	StatTracker stats = new StatTracker(0, 0, true);
+				        	for (int c = 0; c < mean_count; c++) {
+				        		// For now, just use a uniform distribution on the set_sizes
+						        BasicGraph graph = GraphCreator.createRandomConnectedGraphSimplified(node_num, k, density, max_deg, set_sizes);
+						        System.out.println("Running Test " + func.toString());
+					        	stats.addTracker(func.runTest(graph));
+					        	// Because more and more RAM will be used, it may be a good idea to reverse this
+					        	graph.reset();
+				        	}
+				        	
+				        	wr.append(
+				        			String.valueOf(overall_counter++) + "," +	// TestID
+		        					String.valueOf(k) + "," +	// K
+		        					String.valueOf(node_num) + "," +	// Node_Num
+		        					String.valueOf(density) + "," +	// Density
+		        					String.valueOf((1.0/maxD)) + "," +	// MaxDegree
+		        					"Uniform" + "," +	// Distribution
+		        					(stats.my_correctness ? "true" : "false") + "," +	// Is-Colored-Correctly
+		        					String.valueOf((stats.my_color_count/mean_count) - k) + "," +	// K-Correctness
+		        					String.valueOf((stats.my_duration/mean_count)) + "," +	// Duration
+		        					func.toString() // Test_Type
+		        			);
+				        	wr.append("\n");
+				        }
+					}
 				}
 			}
 		}
@@ -105,7 +119,7 @@ public class Runner {
         	// graph.reset();
         }
         */
-                
+        System.out.print("DONE");       
         // It worked!
         System.exit(0);
 	}

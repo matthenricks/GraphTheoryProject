@@ -20,6 +20,12 @@ public class Analysis {
 			my_correctness = is_correct;
 		}
 		
+		public void addTracker(StatTracker st) {
+			my_duration += st.my_duration;
+			my_color_count += st.my_color_count;
+			my_correctness = my_correctness && st.my_correctness;
+		}
+		
 		public String toString() {
 			StringBuffer ret_str = new StringBuffer();
 			ret_str.append("Total Number of Colors Used: " + my_color_count + "\n");
@@ -55,8 +61,8 @@ public class Analysis {
 	public static StatTestFunction[] functions = {
 		new analyzeStrictDecreasingFunction(),
 		new analyzeDecreasingNeighbors(),
-		new analyzeStrictIncreasing(),
-		new analyzeIncreasingNeighbors(),
+		// new analyzeStrictIncreasing(),
+		// new analyzeIncreasingNeighbors(),
 		new analyzeNumColored(),
 		new analyzeHighColor()
 	};
